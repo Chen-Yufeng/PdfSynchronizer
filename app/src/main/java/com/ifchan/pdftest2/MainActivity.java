@@ -2,20 +2,25 @@ package com.ifchan.pdftest2;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnDrawListener;
+import com.github.barteksc.pdfviewer.listener.OnPageScrollListener;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     PDFView mPDFView;
+    TextView mTextView;
     public static final int REQUEST_CODE = 441;
 
     @Override
@@ -43,7 +48,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         mPDFView = findViewById(R.id.pdfView);
-        mPDFView.fromAsset("sample.pdf").load();
+        mTextView = findViewById(R.id.detailText);
+        mPDFView.fromAsset("sample.pdf").onPageScroll(new OnPageScrollListener() {
+            @Override
+            public void onPageScrolled(int page, float positionOffset) {
+                mTextView.setText("page=" + page + "positionOffset=" + positionOffset);
+            }
+        }).onDraw(new OnDrawListener() {
+            @Override
+            public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int
+                    displayedPage) {
+
+            }
+        }).load();
     }
 
     private void declarePermission() {
