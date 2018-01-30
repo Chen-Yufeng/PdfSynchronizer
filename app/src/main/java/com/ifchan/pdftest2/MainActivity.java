@@ -43,15 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         mPDFView = findViewById(R.id.pdfView);
-        String path = Environment.getExternalStorageDirectory().getPath() + "/《Effective Java中文版 " +
-                "第2版》.(Joshua Bloch).[PDF]&ckook.pdf";
-        File file = new File(path);
-        if (file.exists()) {
-            mPDFView.fromFile(file).load();
-            Toast.makeText(MainActivity.this, "Success!", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(MainActivity.this, "Not exist!", Toast.LENGTH_LONG).show();
-        }
+        mPDFView.fromAsset("sample.pdf").load();
     }
 
     private void declarePermission() {
