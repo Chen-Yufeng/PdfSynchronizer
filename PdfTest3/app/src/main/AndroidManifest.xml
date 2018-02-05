@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ifchan.pdftest3">
+    package="com.ifchan.pdftest3">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.pspdfkit.ui.PdfActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustNothing" />
+        android:name="com.example.networktest.MyApplication"
+        <activity android:name=".PDFViewActivity">
+
+        </activity>
+        <meta-data
+            android:name="pspdfkit_license_key"
+            android:value="cBc3he6B70Z3SJxPqwyX-_p7vvJDo0mU7dCW_JmozG9h2aJDgfUIhGN8IXKhtxBy4h4p7B72B2r-FWwHqrJ8QwS42pLZkP89WKoO8S2AGL2EKsBxgeUd4qQKjjLRZoVqDuPZsl4t4Ns6y1BviJK3kvJF3-pE7TcHKSnekifEDl82hAg5RVBsXda29smkhPTf0ornmL84tQr4JGUzeTgfcm7Z816AnO3TF-BrRe5ioC8jwUKKhPhLEHIhC0vomIDHRUPxooldlgHYYwVlWTn0YNXgl4M7uJHZ6DGgXbqgGoTKnMcSc0oAG77j5VVSl7-mqPauZpqJ1Se6KEj2SoIgVAjTSq1mL-DEY6BGQfeGleZbVzfleYz2Rdos0Cu2uNUeMzCdCXQ3Jg9TO110px4Dfhggqja7D3B-gVkUfuPvwidO8TwYsnoTXTlgURDbvBg2"/>
+
     </application>
 
 </manifest>
