@@ -35,4 +35,9 @@ dependencies {
     compile 'com.getkeepsafe.relinker:relinker:1.2.2'
     compile 'com.facebook.device.yearclass:yearclass:2.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.2.20"
+    //noinspection GradleCompatible,GradleCompatible
+    compile 'com.android.support:design:24+'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    //noinspection GradleCompatible,GradleCompatible
+    compile 'com.android.support:recyclerview-v7:24+'
 }

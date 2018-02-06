@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         initBasicComponent();
         verifyStoragePermissions(this);
-
-
     }
 
     private void initBasicComponent() {
