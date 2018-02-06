@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_pdfview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:ignore="UnusedAttribute"
-    tools:context="zju.homework.pdfviewer.Activitiy.PDFViewActivity">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -38,41 +35,41 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="?colorPrimaryDark"
+            android:layout_alignParentBottom="true"
 
-            android:layout_alignParentBottom="true">
+            android:background="?colorPrimaryDark">
 
 
             <Button
                 android:id="@+id/changePage"
-                android:layout_weight="1"
                 android:layout_width="80dp"
-                android:background="?colorPrimaryDark"
-                android:textColor="@color/pspdf__color_white"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?colorPrimaryDark"
                 android:elevation="4dp"
-                android:text="Page"/>
+                android:text="Page"
+                android:textColor="@color/pspdf__color_white"/>
 
             <Button
                 android:id="@+id/openAnnotationEditing"
                 android:layout_width="80dp"
-                android:background="?colorPrimaryDark"
-                android:textColor="@color/pspdf__color_white"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?colorPrimaryDark"
+                android:elevation="4dp"
                 android:text="Edit"
-                android:elevation="4dp" />
+                android:textColor="@color/pspdf__color_white"/>
 
 
             <Button
                 android:id="@+id/syncAnnotation"
-                android:layout_weight="1"
-                android:background="?colorPrimaryDark"
-                android:textColor="@color/pspdf__color_white"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?colorPrimaryDark"
                 android:elevation="4dp"
-                android:text="sync"/>
+                android:text="sync"
+                android:textColor="@color/pspdf__color_white"/>
 
         </LinearLayout>
 
@@ -83,6 +80,6 @@
         android:id="@+id/inspectorCoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="16dp" />
+        android:elevation="16dp"/>
 
 </FrameLayout>
