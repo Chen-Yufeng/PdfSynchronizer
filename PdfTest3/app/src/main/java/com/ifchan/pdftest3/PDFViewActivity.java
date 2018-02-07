@@ -2,9 +2,15 @@ package com.ifchan.pdftest3;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -20,6 +26,7 @@ import android.widget.Toast;
 
 
 import com.ifchan.pdftest3.Adapter.Annotation_Adapter;
+import com.ifchan.pdftest3.Entities.AnnoInfo;
 import com.pspdfkit.annotations.Annotation;
 import com.pspdfkit.annotations.AnnotationProvider;
 import com.pspdfkit.annotations.AnnotationType;
@@ -42,6 +49,7 @@ import com.pspdfkit.ui.toolbar.AnnotationEditingToolbar;
 import com.pspdfkit.ui.toolbar.TextSelectionToolbar;
 import com.pspdfkit.ui.toolbar.ToolbarCoordinatorLayout;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,6 +64,7 @@ import javax.security.auth.login.LoginException;
 import static com.ifchan.pdftest3.Utils.MyApplication.context;
 import static com.ifchan.pdftest3.Utils.Util.EXTRA_URI;
 import static com.ifchan.pdftest3.Utils.Util.PSPDFKIT_LICENSE_KEY;
+import static com.ifchan.pdftest3.Utils.Util.SER_KEY;
 
 public class PDFViewActivity extends AppCompatActivity implements
         AnnotationManager.OnAnnotationCreationModeChangeListener,
@@ -79,9 +88,14 @@ public class PDFViewActivity extends AppCompatActivity implements
     public Button annotationClearButton;
     public HashMap<Annotation, Boolean> hasUpload;
     public DrawerLayout mDrawerLayout;
-    
+
+    public IntentFilter intentFilter;
+    public LocalReceiver localReceiver;
+    public LocalBroadcastManager localBroadcastManager;
+
     public String TAG;
-    public ArrayList<String> contents = new ArrayList<>();
+    public ArrayList<AnnoInfo> annoInfos = new ArrayList<>();
+    public List<AnnoInfo> mlist ;
 
     public List<Annotation> guide = new ArrayList<>();
 
@@ -95,7 +109,7 @@ public class PDFViewActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_pdfview);
         TAG = "TESTwhere";
 
-
+        localBroadcastManager = LocalBroadcastManager.getInstance(this); // 获取实例
 
         final PdfConfiguration config = new PdfConfiguration
                 .Builder().build();
@@ -163,6 +177,12 @@ public class PDFViewActivity extends AppCompatActivity implements
 //                return true;
 //            }
 //        });
+
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(SER_KEY);
+        localReceiver = new LocalReceiver();
+        localBroadcastManager.registerReceiver(localReceiver, intentFilter);
     }
 
     private void initAnnotationList() {
@@ -170,25 +190,25 @@ public class PDFViewActivity extends AppCompatActivity implements
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new Annotation_Adapter(guide);
+        adapter = new Annotation_Adapter(annoInfos);
         recyclerView.setAdapter(adapter);
     }
 
     public void sendToList(){
+        annoInfos.clear();
         guide =  fragment
                 .getDocument()
                 .getAnnotationProvider()
                 .getAllAnnotationsOfType(EnumSet.of(AnnotationType.NOTE))
                 .toList().blockingGet();
-
-
 //        guide.addAll(noteAnnotations);
         for(final Annotation annotation : guide) {
-            Log.i("Annotation", "uplo adAnnotation: "+annotation.getContents());
-            contents.add(annotation.getContents());
+            Log.i("Annotation", "uplo adAnnotation: "+"YOOOOOOOOOOOOOOOO"+annotation.toString());
+            annoInfos.add(new AnnoInfo (annotation.getPageIndex(),annotation.getContents()));
 //            Toast.makeText(context, (CharSequence) annotation,Toast.LENGTH_SHORT);
         }
         adapter.notifyDataSetChanged();
+
     }
 //    public void uploadAnnotation(){
 //        // get annotations
@@ -296,4 +316,19 @@ public class PDFViewActivity extends AppCompatActivity implements
         Log.i(TAG, "onDestroy: ");
     }
 
+    class LocalReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(context, "received local broadcast", Toast.LENGTH_SHORT).
+                    show();
+            int page = getIntent().getIntExtra(SER_KEY,-1);
+            if(page!=-1) {
+                fragment.setPageIndex(page);
+            }
+            else{
+                Toast.makeText(context, "received local broadcast-------------1", Toast.LENGTH_SHORT).
+                        show();
+            }
+        }
+    }
 }

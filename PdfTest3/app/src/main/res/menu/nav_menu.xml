@@ -3,5 +3,8 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/r_v"/>
+
+        android:textSize="30sp"
+        android:id="@+id/rv"
+        android:background="#EEEEEE" />
 </menu>
