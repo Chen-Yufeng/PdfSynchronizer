@@ -19,27 +19,62 @@ public class Client {
     private long mTransLength = 0;
 
     public interface ConnectCallback {
+        /**
+         * Called and tells whether the connection is successful.
+         *
+         * @param hasConnected
+         */
         void connectResult(boolean hasConnected);
 
+        /**
+         * Called and tells whether the file has been fully received.
+         *
+         * @param isFileReceivedSuccessful
+         */
         void receiveFileCompleted(boolean isFileReceivedSuccessful);
     }
 
+    /**
+     * Set callbacks.
+     *
+     * @param connectedCallback
+     */
     public void setConnectedCallback(ConnectCallback connectedCallback) {
         mConnectedCallback = connectedCallback;
     }
 
+    /**
+     * The Client will try to connect the server machine, the result of connection can be get by
+     * callback(if has been set).
+     * @param ipAddress IP of server machine.
+     */
     public void connect(String ipAddress) {
         new ConnectThread().execute(ipAddress);
     }
 
+    /**
+     * The Client will try to receive the special file, the result of if can be get by
+     * callback(if has been set).
+     * @param destination you can use Environment.getExternalStorageDirectory().getPath() to get
+     *                    a directory path (not a file path, file name will add automatically). Be
+     *                    sure that it ends with a '/'.
+     */
     public void startReceive(String destination) {
         new ReceiveFileThread().execute(destination);
     }
 
+    /**
+     * Have not tried, I guess it have 0 error.
+     * @return The length of file in bytes.
+     */
     public long getFileLength() {
         return mFileLength;
     }
 
+    /**
+     * Have not tried either, I guess it have 0 error.
+     * @return The length of file received in bytes.
+     */
     public long getTransLength() {
         return mTransLength;
     }
@@ -70,6 +105,9 @@ public class Client {
         }
     }
 
+    /**
+     * Close the socket.
+     */
     public void disConnect() {
         try {
             mSocket.close();
@@ -96,7 +134,9 @@ public class Client {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            mConnectedCallback.connectResult(hasConnected);
+            if (mConnectedCallback != null) {
+                mConnectedCallback.connectResult(hasConnected);
+            }
         }
     }
 
@@ -115,7 +155,9 @@ public class Client {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            mConnectedCallback.receiveFileCompleted(mTransLength == mFileLength);
+            if (mConnectedCallback != null) {
+                mConnectedCallback.receiveFileCompleted(mTransLength == mFileLength);
+            }
         }
     }
 }

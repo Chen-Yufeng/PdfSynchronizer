@@ -25,6 +25,13 @@ public class Server {
     private ArrayList<Socket> sockets = new ArrayList<>();
 
     interface ServiceCallbacks {
+        /**
+         * It can execute every while loop used to send file, and the buff size is 1024 bytes.
+         * So it will execute quickly.
+         *
+         * @param clientIndex The index of client, start from 0.
+         * @param transLength The length of file has been sent in bytes.
+         */
         void executeEverySendingLoop(int clientIndex, long transLength);
     }
 
@@ -35,26 +42,22 @@ public class Server {
     public boolean setFile(File file) {
         if (file.exists()) {
             this.file = file;
+            fileLength = file.length();
         } else {
             return false;
         }
         return true;
     }
 
+    /**
+     * Start detect connection, keep connection with clients. File sending will start after
+     * connect successfully.
+     */
     public void start() {
         isRunning = true;
         new ConnectDetectThread().execute();
     }
 
-    private void run() throws IOException {
-        serverSocket = new ServerSocket(PORT);
-
-        while (isRunning) {
-            Socket socket = serverSocket.accept();
-            sockets.add(socket);
-            sendFile(socket);
-        }
-    }
 
     public void stop() {
         isRunning = false;
@@ -67,8 +70,51 @@ public class Server {
         }
     }
 
+
+    class ConnectDetectThread extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                run();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private void run() throws IOException {
+        isRunning = true;
+        serverSocket = new ServerSocket(PORT);
+
+        while (isRunning) {
+            Socket socket = serverSocket.accept();
+            sockets.add(socket);
+            new SendFileThread(socket);
+        }
+    }
+
+    class SendFileThread extends Thread {
+        private Socket socket;
+
+        public SendFileThread(Socket socket) {
+            this.socket = socket;
+            start();
+        }
+
+        @Override
+
+        public void run() {
+            try {
+                sendFile(socket);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     //android need to run in other thread!
-    public boolean sendFile(Socket clientSocket) throws IOException {
+    private boolean sendFile(Socket clientSocket) throws IOException {
         if (file == null) {
             return false;
         }
@@ -81,7 +127,7 @@ public class Server {
         FileInputStream fileInputStream = new FileInputStream(file);
         byte[] sendBytes = new byte[1024];
         int clientIndex = transLength.size();
-        int length = 0;
+        int length;
         long memory = 0;
         while ((length = fileInputStream.read(sendBytes, 0, sendBytes.length)) > 0) {
             if (transLength.size() == clientIndex) {
@@ -110,17 +156,4 @@ public class Server {
 
         return true;
     }
-
-    class ConnectDetectThread extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                run();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
-
 }
