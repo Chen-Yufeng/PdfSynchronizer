@@ -1,11 +1,13 @@
-package com.ifchan.p2p.Netword;
+package com.ifchan.p2p.Network;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
  */
 
 public class Server {
+    public static final String TAG = "@ifchan";
     public static final int PORT = 2018;
     private ServiceCallbacks mServiceCallbacks;
     private boolean isRunning = false;
@@ -155,5 +158,28 @@ public class Server {
         }
 
         return true;
+    }
+
+    /**
+     *
+     * @param annotation Please change import to PSPDFKIT annotation.
+     */
+    public void sendAnnotation(Object annotation) {
+        if (isRunning) {
+            for (Socket socket : sockets) {
+                try {
+                    DataOutputStream dataOutputStream = new DataOutputStream(socket
+                            .getOutputStream());
+                    byte[] bytes = ObjectToBytesUtil.serialize(annotation);
+                    dataOutputStream.writeInt(bytes.length);
+                    dataOutputStream.write(bytes);
+                    dataOutputStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            Log.e(TAG, "sendAnnotation: Not running!");
+        }
     }
 }

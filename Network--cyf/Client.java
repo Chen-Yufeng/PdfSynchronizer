@@ -1,4 +1,4 @@
-package com.ifchan.p2p.Netword;
+package com.ifchan.p2p.Network;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -7,13 +7,15 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.Socket;
 
 public class Client {
-    private final String TAG = "@vir Client";
+    private final String TAG = "@ifchan";
     public static final int PORT = 2018;
     private ConnectCallback mConnectedCallback;
     private boolean hasConnected = false;
+    private boolean isReceiving = false;
     private Socket mSocket;
     private long mFileLength = 0;
     private long mTransLength = 0;
@@ -32,6 +34,13 @@ public class Client {
          * @param isFileReceivedSuccessful
          */
         void receiveFileCompleted(boolean isFileReceivedSuccessful);
+
+        /**
+         * Execute when annotation received.
+         *
+         * @param annotation Annotation from server.
+         */
+        void onReceiveAnnotation(Object annotation);
     }
 
     /**
@@ -46,6 +55,7 @@ public class Client {
     /**
      * The Client will try to connect the server machine, the result of connection can be get by
      * callback(if has been set).
+     *
      * @param ipAddress IP of server machine.
      */
     public void connect(String ipAddress) {
@@ -55,6 +65,7 @@ public class Client {
     /**
      * The Client will try to receive the special file, the result of if can be get by
      * callback(if has been set).
+     *
      * @param destination you can use Environment.getExternalStorageDirectory().getPath() to get
      *                    a directory path (not a file path, file name will add automatically). Be
      *                    sure that it ends with a '/'.
@@ -65,6 +76,7 @@ public class Client {
 
     /**
      * Have not tried, I guess it have 0 error.
+     *
      * @return The length of file in bytes.
      */
     public long getFileLength() {
@@ -73,6 +85,7 @@ public class Client {
 
     /**
      * Have not tried either, I guess it have 0 error.
+     *
      * @return The length of file received in bytes.
      */
     public long getTransLength() {
@@ -159,5 +172,39 @@ public class Client {
                 mConnectedCallback.receiveFileCompleted(mTransLength == mFileLength);
             }
         }
+    }
+
+    private void receiveAnnotation() {
+        if (hasConnected) {
+            try {
+                DataInputStream dataInputStream = new DataInputStream(mSocket.getInputStream());
+                while (isReceiving && hasConnected) {
+                    int length = dataInputStream.readInt();
+                    if (length > 0) {
+                        byte[] bytes = new byte[length];
+                        dataInputStream.readFully(bytes, 0, bytes.length);
+                        mConnectedCallback.onReceiveAnnotation(ObjectToBytesUtil
+                                .deserialize(bytes));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e(TAG, "startReceiveAnnotation: Have not connected!");
+        }
+    }
+
+    private class ReceivingAnnotationThread extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            receiveAnnotation();
+            return null;
+        }
+    }
+
+    public void startReceiveAnnotation() {
+        isReceiving = true;
     }
 }
