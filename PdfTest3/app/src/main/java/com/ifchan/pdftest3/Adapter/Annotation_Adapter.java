@@ -20,6 +20,7 @@ import com.ifchan.pdftest3.MainActivity;
 import com.ifchan.pdftest3.PDFViewActivity;
 import com.ifchan.pdftest3.R;
 import com.ifchan.pdftest3.Utils.MyApplication;
+import com.ifchan.pdftest3.view.AnnotationItem;
 
 
 import java.io.Serializable;
@@ -39,15 +40,17 @@ public class Annotation_Adapter extends  RecyclerView.Adapter<Annotation_Adapter
     private LocalBroadcastManager localBroadcastManager;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView annotation;
-        CardView cardView;
-        TextView page;
+//        TextView annotation;
+//        CardView cardView;
+//        TextView page;
+        AnnotationItem item;
 
         public ViewHolder(View view) {
             super(view);
-            annotation = (TextView) view.findViewById(R.id.annotation);
-            cardView = (CardView) itemView;
-            page = (TextView) view.findViewById(R.id.page);
+//            annotation = (TextView) view.findViewById(R.id.annotation);
+//            cardView = (CardView) itemView;
+//            page = (TextView) view.findViewById(R.id.page);
+            item = view.findViewById(R.id.list_item);
         }
     }
 
@@ -76,11 +79,11 @@ public class Annotation_Adapter extends  RecyclerView.Adapter<Annotation_Adapter
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext); // 获取实例
         AnnoInfo thisannotation = mAnnoInfoList.get(position);
 
-        holder.annotation.setText(thisannotation.content);
-        holder.page.setText("第"+thisannotation.page+"页");
+        holder.item.setContent(thisannotation.content);
+        holder.item.setInfo("第"+thisannotation.page+"页");
         Log.i("AnnoInfo", mAnnoInfoList.toString());
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
