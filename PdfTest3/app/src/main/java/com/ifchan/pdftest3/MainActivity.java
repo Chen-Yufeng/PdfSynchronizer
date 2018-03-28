@@ -4,12 +4,16 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import static com.ifchan.pdftest3.Utils.Util.EXTRA_URI;
 
@@ -21,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
-    Button selectLocalFileButton;
+    private ActionBarDrawerToggle drawerbar;
+    public DrawerLayout drawerLayout;
+    private RelativeLayout main_left_drawer_layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +40,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initBasicComponent() {
-        selectLocalFileButton = findViewById(R.id.localFile);
-        selectLocalFileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performFileSearch();
-            }
-        });
+        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+
+        //设置菜单内容之外其他区域的背景色
+        drawerLayout.setScrimColor(Color.argb(100, 200, 200, 200));
+
+        //左边菜单
+        main_left_drawer_layout = (RelativeLayout) findViewById(R.id.main_left_drawer_layout);
 
     }
 
-    public void init() {
+    public void openFile(View view) {
         Uri uri = Uri.parse("file:///android_asset/linux.pdf");
         Intent intent = new Intent(MainActivity.this, PDFViewActivity.class);
         intent.putExtra(EXTRA_URI, uri);
@@ -51,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
 //                new PdfActivityConfiguration.Builder(context)
 //                        .build();
         this.startActivity(intent);
+    }
+
+    public void openLeftLayout(View view) {
+        if (drawerLayout.isDrawerOpen(main_left_drawer_layout)) {
+            drawerLayout.closeDrawer(main_left_drawer_layout);
+        } else {
+            drawerLayout.openDrawer(main_left_drawer_layout);
+        }
     }
 
     public static void verifyStoragePermissions(Activity activity) {

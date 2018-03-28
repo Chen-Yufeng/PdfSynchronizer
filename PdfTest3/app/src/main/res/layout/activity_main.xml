@@ -1,28 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ifchan.pdftest3.MainActivity">
+    android:background="@android:color/transparent" >
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="创建房间"
-        android:id="@+id/Creat"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="加入房间"
-        android:id="@+id/join"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="本地文档"
-        android:id="@+id/localFile"/>
+    <!-- 下面显示的主要是主界面内容 -->
+    <RelativeLayout
+        android:id="@+id/main_content_frame_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg2"
 
-</LinearLayout>
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/left_drawer"
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="84dp"
+            android:onClick="openLeftLayout"
+            android:text="用户信息"
+            android:background="@mipmap/button"/>
+
+        <Button
+            android:id="@+id/create"
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:layout_above="@+id/add"
+            android:layout_alignLeft="@+id/left_drawer"
+            android:layout_alignStart="@+id/left_drawer"
+            android:layout_marginBottom="19dp"
+            android:onClick="openLeftLayout"
+            android:text="创建房间"
+            android:background="@mipmap/button"/>
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:layout_alignLeft="@+id/create"
+            android:layout_alignStart="@+id/create"
+            android:layout_below="@+id/left_drawer"
+            android:onClick="openLeftLayout"
+            android:text="加入房间"
+            android:background="@mipmap/button"/>
+
+        <Button
+            android:id="@+id/local"
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:layout_alignLeft="@+id/add"
+            android:layout_alignStart="@+id/add"
+            android:layout_below="@+id/add"
+            android:layout_marginTop="22dp"
+            android:onClick="openFile"
+            android:text="本地文档"
+            android:background="@mipmap/button"/>
+
+    </RelativeLayout>
+
+    <!-- 左侧滑动栏 -->
+    <RelativeLayout
+        android:id="@+id/main_left_drawer_layout"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#EDDD">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="用户信息"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:id="@+id/textView" />
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_alignStart="@+id/textView"
+            android:layout_alignTop="@+id/textView"
+            android:layout_marginTop="50dp"
+            android:src="@mipmap/ic_launcher" />
+
+
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/change"
+            android:layout_alignLeft="@+id/change"
+            android:layout_alignStart="@+id/change"
+            android:layout_marginBottom="11dp"
+            android:text="用户名：XXX"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/img"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:text="点击修改 &gt;&gt;" />
+
+        <TextView
+            android:id="@+id/ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/change"
+            android:layout_marginTop="44dp"
+            android:text="当前本机ip：\n\n123.123.123.123"
+            android:textColor="#000"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:text="版本 v1.0" />
+
+    </RelativeLayout>
+
+
+</android.support.v4.widget.DrawerLayout>

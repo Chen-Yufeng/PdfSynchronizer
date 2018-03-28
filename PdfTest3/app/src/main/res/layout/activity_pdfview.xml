@@ -110,11 +110,14 @@
         <!--android:layout_height="match_parent"-->
         <!--android:id="@+id/rv"/>-->
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
-            android:textSize="30sp"
-            android:id="@+id/rv"
-            android:background="#EEEEEE" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="80dp" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

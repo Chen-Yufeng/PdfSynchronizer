@@ -119,7 +119,7 @@ public class PDFViewActivity extends AppCompatActivity implements
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_list);
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_list);
         }
 
 //        NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
