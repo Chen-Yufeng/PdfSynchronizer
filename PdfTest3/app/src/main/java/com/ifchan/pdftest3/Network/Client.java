@@ -3,11 +3,12 @@ package com.ifchan.pdftest3.Network;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.ifchan.pdftest3.Utils.ObjectToBytesUtil;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.net.Socket;
 
 public class Client {

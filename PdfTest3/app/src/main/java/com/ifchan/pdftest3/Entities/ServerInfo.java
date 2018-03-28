@@ -1,4 +1,4 @@
-package com.ifchan.p2p.Netword;
+package com.ifchan.pdftest3.Entities;
 
 public class ServerInfo {
     private String ip;

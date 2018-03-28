@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import static com.ifchan.pdftest3.Utils.Util.EXTRA_URI;
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-                Uri uri = null;
+                Uri uri;
                 uri = data.getData();
                 if (uri.toString().substring(uri.toString().lastIndexOf('.')).equalsIgnoreCase("" +
                         ".pdf")) {

@@ -3,6 +3,8 @@ package com.ifchan.pdftest3.Network;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.ifchan.pdftest3.Entities.ServerInfo;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
